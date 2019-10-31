@@ -70,7 +70,11 @@ uint16_t bootloader_start;
  *
  * http://www.fourwalledcubicle.com/files/LUFA/Doc/120730/html/_page__software_bootloader_start.html
  */
-#define BOOTLOADER_RESET_KEY 0xB007B007
+#if defined(BOOTLOADER_QMK_DFU)
+    #define BOOTLOADER_RESET_KEY 0xAC42
+#else
+    #define BOOTLOADER_RESET_KEY 0xB007B007
+#endif
 uint32_t reset_key __attribute__((section(".noinit,\"aw\",@nobits;")));
 
 /** \brief initialize MCU status by watchdog reset

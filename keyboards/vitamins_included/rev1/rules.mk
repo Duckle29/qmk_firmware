@@ -1,2 +1,2 @@
 SPLIT_KEYBOARD = yes
-BOOTLOADER = caterina
+BOOTLOADER = qmk-dfu #caterina
