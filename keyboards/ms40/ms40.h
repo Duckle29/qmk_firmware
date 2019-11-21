@@ -44,7 +44,7 @@
         KC_##L00, KC_##L01, KC_##L02, KC_##L03, KC_##L04, KC_##R00, KC_##R01, KC_##R02, KC_##R03, KC_##R04, \
         KC_##L10, KC_##L11, KC_##L12, KC_##L13, KC_##L14, KC_##R10, KC_##R11, KC_##R12, KC_##R13, KC_##R14, \
         KC_##L20, KC_##L21, KC_##L22, KC_##L23, KC_##L24, KC_##R20, KC_##R21, KC_##R22, KC_##R23, KC_##R24, \
-        KC_##L30, KC_##L31, KC_##L32, KC_##L33, KC_##L34, KC_##R30, KC_##R31, KC_##R32, KC_##R33, KC_##R34, \
+        KC_##L30, KC_##L31, KC_##L32, KC_##L33, KC_##L34, KC_##R30, KC_##R31, KC_##R32, KC_##R33, KC_##R34 \
     )
 
 #define KC_LAYOUT_ortho_4x12 LAYOUT_kc
