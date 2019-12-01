@@ -20,10 +20,10 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(/* Base */
-                 KC_7, KC_8, KC_9,
-                 KC_4, KC_5, KC_6,
-                 KC_1, KC_2, KC_3,
-                 KC_0, KC_DOT, KC_ENT)
+                 KC_P7, KC_P8, KC_P9,
+                 KC_P4, KC_P5, KC_P6,
+                 KC_P1, KC_P2, KC_P3,
+                 KC_P0, KC_PDOT, KC_PENT)
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -68,20 +68,22 @@ void oled_task_user(void) {
 }
 #endif
 
-void matrix_init_user(void) {}
-
-void matrix_scan_user(void) {}
-
-void led_set_user(uint8_t usb_led) {}
+void keyboard_post_init_user() {
+    //rgblight_sethsv(0, 0, 255);
+}
 
 #ifdef ENCODER_ENABLE
 void encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
+        if(rgblight_get_val() == 255)
+        {
+            rgblight_sethsv(0,100,150);
+        }
         // Move whole words. Hold shift to select while moving.
         if (clockwise) {
-            tap_code16(C(KC_RGHT));
+            rgblight_increase_hue_noeeprom();
         } else {
-            tap_code16(C(KC_LEFT));
+            rgblight_decrease_hue_noeeprom();
         }
     }
 }
