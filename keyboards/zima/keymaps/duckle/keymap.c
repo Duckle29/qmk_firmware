@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         NOTE9,      NOTE10,     NOTE11  \
     ),
     [SATISFACTORY] = LAYOUT(
-        KC_NO,      KC_NO,      KC_NO,  \
+        KC_NO,      KC_NO,      TG_SPRINT,\
         KC_NO,      KC_NO,      KC_NO,  \
         KC_NO,      KC_NO,      KC_NO,  \
         KC_NO,      KC_NO,      CHR_JMP \
