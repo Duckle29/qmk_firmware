@@ -37,7 +37,8 @@ enum custom_keycodes {
     NOTE10,
     NOTE11,
 
-    CHR_JMP
+    CHR_JMP,
+    TG_SPRINT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -62,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-
+bool tg_sprint_state = false;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case NOTE0 ... NOTE11:
@@ -75,9 +76,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CHR_JMP:
             if (record->event.pressed) {
                 // when keycode QMKURL is pressed
-                SEND_STRING("c" SS_TAP(X_SPC));
+                SEND_STRING(SS_DOWN(X_C) SS_TAP(X_SPC) SS_UP(X_C));
             } else {
                 // when keycode QMKURL is released
+            }
+            break;
+        case TG_SPRINT:
+            if(tg_sprint_state)
+            {
+                SEND_STRING(SS_UP(X_LSHIFT) SS_UP(X_W));
+                rgblight_setrgb_at(255, 255, 255, 0);
+            }
+            else
+            {
+                SEND_STRING(SS_DOWN(X_LSHIFT) SS_DOWN(X_W));
+                rgblight_setrgb_at(255, 0, 0, 0);
             }
             break;
     }
