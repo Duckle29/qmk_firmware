@@ -21,9 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VENDOR_ID       0x1C11
 #define PRODUCT_ID      0xB04D
 #define DEVICE_VER      0x0001
+<<<<<<< HEAD
 #define MANUFACTURER    Input Club
 #define PRODUCT         Infinity 60% (QMK)
 
+=======
+#define MANUFACTURER Input Club
+#define PRODUCT Infinity_60%/QMK
+>>>>>>> Personal branch for personal keeb
 /* key matrix size */
 #define MATRIX_ROWS 7
 #define MATRIX_COLS 9
