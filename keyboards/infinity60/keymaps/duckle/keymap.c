@@ -2,6 +2,7 @@
 
 #define TG_NKRO MAGIC_TOGGLE_NKRO
 
+<<<<<<< HEAD
 const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
     UCIS_SYM("eye", 0x1F441),     // 👁
     UCIS_SYM("lips", 0x1F444),    // 👄
@@ -9,6 +10,8 @@ const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
 
 );
 
+=======
+>>>>>>> 206061e0a... Added custom keymap
 enum layer_names {
   _BASE,
   _FN,
@@ -16,7 +19,12 @@ enum layer_names {
 };
 
 enum custom_keycodes {
+<<<<<<< HEAD
   UCIS_S = SAFE_RANGE
+=======
+  AUTO_SPRT,
+  SOMETHING
+>>>>>>> 206061e0a... Added custom keymap
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -31,14 +39,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* SHIFT      Z       X       C       V       B       N       M       ,                          .       /       Shift            FN
     */KC_LSFT,  KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,  KC_COMM,                   KC_DOT,KC_SLSH,   KC_RSFT,       MO(_FN), \
     /* CTRL     GUI       ALT                    Space
+<<<<<<< HEAD
     */KC_LCTL,  KC_LGUI,  KC_LALT,               KC_SPC,                                       KC_RALT,      KC_NO,     KC_RCTL,   MO(_MACRO)),
+=======
+    */KC_LCTL,  KC_LGUI,  KC_LALT,               KC_SPC,                                       KC_NO,      KC_NO,     KC_RCTL,   MO(_MACRO)),
+>>>>>>> 206061e0a... Added custom keymap
 
     [_FN]   = LAYOUT_60_ansi_split_bs_rshift(
     // Layer 1: General second layer with common functions
     /*DELETE      F1      F2      F3      F4      F5      F6     F7      F8      F9      F10      F11        F12          VOL-       VOL+
     */KC_DEL,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6, KC_F7,  KC_F8,  KC_F9,  KC_F10,  KC_F11,    KC_F12,      KC_VOLD,   KC_VOLU, \
     /*  CAPS      F11     UP                                                    MUTE    PL/PS  PREV_TRACK NEXT_TRACK              DELETE
+<<<<<<< HEAD
     */KC_CAPS,  KC_F11, KC_UP,_______,_______,_______,_______, UCIS_S, _______, KC_MUTE,KC_MPLY, KC_MPRV,   KC_MNXT,               KC_DEL,  \
+=======
+    */KC_CAPS,  KC_F11, KC_UP,_______,_______,_______,_______,_______,_______, KC_MUTE,KC_MPLY, KC_MPRV,   KC_MNXT,               KC_DEL,   \
+>>>>>>> 206061e0a... Added custom keymap
     /*           LEFT     DOWN    RIGHT                                                                      HOME    END
     */_______,  KC_LEFT,KC_DOWN,KC_RIGHT,_______,_______,_______,_______,_______,_______,                  KC_HOME, KC_END,       _______,  \
     /*                                                                                           PAGE UP  PAGE DOWN
