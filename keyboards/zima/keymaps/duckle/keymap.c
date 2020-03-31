@@ -92,6 +92,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_DOWN(X_LSHIFT) SS_DOWN(X_W));
                 rgblight_setrgb_at(255, 0, 0, 0);
             }
+            tg_sprint_state = !tg_sprint_state;
             break;
     }
     return true;
