@@ -188,19 +188,19 @@ static inline void disable_pwm(void) {
 // instead of letting the Output Match Comparator control the led pin
 // (which is not possible since the backlight is not wired to PWM pins on the
 // CPU), we do the LED on/off by oursleves.
-// The timer is setup to count up to 0xFFFF, and we set the Output Compare
+// The timer is setup to count up to 0xFFF, and we set the Output Compare
 // register to the current 16bits backlight level (after CIE correction).
 // This means the CPU will trigger a compare match interrupt when the counter
 // reaches the backlight level, where we turn off the LEDs,
 // but also an overflow interrupt when the counter rolls back to 0,
 // in which we're going to turn on the LEDs.
-// The LED will then be on for OCRxx/0xFFFF time, adjusted every 244Hz.
+// The LED will then be on for OCRxx/0xFFF time, adjusted every 3.9kHz.
 
 // Triggered when the counter reaches the OCRx value
 ISR(TIMERx_COMPA_vect) { backlight_pins_off(); }
 
 // Triggered when the counter reaches the TOP value
-// this one triggers at F_CPU/65536 =~ 244 Hz
+// this one triggers at F_CPU/4096 =~ 3.9 kHz
 ISR(TIMERx_OVF_vect) {
 #    ifdef BACKLIGHT_BREATHING
     if (is_breathing()) {
@@ -215,32 +215,35 @@ ISR(TIMERx_OVF_vect) {
     // artifacts (especially while breathing, because breathing_task
     // takes many computation cycles).
     // so better not turn them on while the counter TOP is very low.
-    if (OCRxx > 256) {
+    if (OCRxx > 128) {
         backlight_pins_on();
     }
 }
 
 #endif
 
-#define TIMER_TOP 0xFFFFU
+#define TIMER_TOP 0xFFFU
 
 // See http://jared.geek.nz/2013/feb/linear-led-pwm
 static uint16_t cie_lightness(uint16_t v) {
-    if (v <= 5243)     // if below 8% of max
+    if (v <= 328)     // if below 8% of max
         return v / 9;  // same as dividing by 900%
     else {
-        uint32_t y = (((uint32_t)v + 10486) << 8) / (10486 + 0xFFFFUL);  // add 16% of max and compare
+        // If above 8%, add ~16% of max, and normalize with (max + ~16% max)
+        uint32_t y = (((uint32_t)v + 655) << 8) / (TIMER_TOP + 655);
         // to get a useful result with integer division, we shift left in the expression above
-        // and revert what we've done again after squaring.
-        y = y * y * y >> 8;
-        if (y > 0xFFFFUL)  // prevent overflow
-            return 0xFFFFU;
+        // Cube it and undo the bit-shifting.
+        y = y * y * y >> 12;
+        // Due to the cubing, that's 3 times more (24bit) however the result should also be multiplied by
+        // 2^12, which is the same as left shifting 12 bits.
+        if (y > TIMER_TOP)  // prevent overflow
+            return TIMER_TOP;
         else
             return (uint16_t)y;
     }
 }
 
-// range for val is [0..TIMER_TOP]. PWM pin is high while the timer count is below val.
+// range for val is [0..0xFFF]. PWM pin is high while the timer count is below val.
 static inline void set_pwm(uint16_t val) { OCRxx = val; }
 
 void backlight_set(uint8_t level) {
@@ -317,7 +320,7 @@ bool is_breathing(void) { return !!(TIMSKx & _BV(TOIEx)); }
         } while (0)
 #    define breathing_max()                                       \
         do {                                                      \
-            breathing_counter = get_breathing_period() * 244 / 2; \
+            breathing_counter = get_breathing_period() * 3900 / 2; \
         } while (0)
 
 void breathing_enable(void) {
@@ -359,23 +362,23 @@ static inline uint16_t scale_backlight(uint16_t v) { return v / BACKLIGHT_LEVELS
 #    ifdef BACKLIGHT_PWM_TIMER
 void breathing_task(void)
 #    else
-/* Assuming a 16MHz CPU clock and a timer that resets at 64k (ICR1), the following interrupt handler will run
- * about 244 times per second.
+/* Assuming a 16MHz CPU clock and a timer that resets at 4k (ICR1), the following interrupt handler will run
+ * about 3900 times per second.
  */
 ISR(TIMERx_OVF_vect)
 #    endif
 {
     uint8_t  breathing_period = get_breathing_period();
-    uint16_t interval         = (uint16_t)breathing_period * 244 / BREATHING_STEPS;
+    uint16_t interval         = (uint16_t)breathing_period * 3900 / BREATHING_STEPS;
     // resetting after one period to prevent ugly reset at overflow.
-    breathing_counter = (breathing_counter + 1) % (breathing_period * 244);
+    breathing_counter = (breathing_counter + 1) % (breathing_period * 3900);
     uint8_t index     = breathing_counter / interval % BREATHING_STEPS;
 
     if (((breathing_halt == BREATHING_HALT_ON) && (index == BREATHING_STEPS / 2)) || ((breathing_halt == BREATHING_HALT_OFF) && (index == BREATHING_STEPS - 1))) {
         breathing_interrupt_disable();
     }
 
-    set_pwm(cie_lightness(scale_backlight((uint16_t)pgm_read_byte(&breathing_table[index]) * 0x0101U)));
+    set_pwm(cie_lightness(scale_backlight((uint16_t)pgm_read_byte(&breathing_table[index]) * 16)));
 }
 
 #endif  // BACKLIGHT_BREATHING
@@ -413,8 +416,9 @@ void backlight_init_ports(void) {
 
     TCCRxB = _BV(WGM13) | _BV(WGM12) | _BV(CS10);
 #endif
-    // Use full 16-bit resolution. Counter counts to ICR1 before reset to 0.
-    ICRx = TIMER_TOP;
+    // Use reduced 12-bit resolution to have PWM run at 3.9KHz instead of 244Hz. 
+    // Counter counts to ICR1 before reset to 0.
+    ICRx = 0xFFF;
 
     backlight_init();
 #ifdef BACKLIGHT_BREATHING
