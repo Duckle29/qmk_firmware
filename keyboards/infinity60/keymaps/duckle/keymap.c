@@ -3,9 +3,9 @@
 #define TG_NKRO MAGIC_TOGGLE_NKRO
 
 const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
-    UCIS_SYM("eye", 0x1F441),     // 2321f441
-    UCIS_SYM("lips", 0x1F444),    //
-    UCIS_SYM("nose", 0x1F443)     //
+    UCIS_SYM("eye", 0x1F441),     // 👁
+    UCIS_SYM("lips", 0x1F444),    // 👄
+    UCIS_SYM("nose", 0x1F443)     // 👃
 
 );
 
@@ -59,6 +59,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
     */_______,  _______, _______,                   _______,                                    _______,    _______,   _______,     _______)
 };
+
+void keyboard_post_init_user(void) {
+  set_unicode_input_mode(UC_WINC);
+}
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
