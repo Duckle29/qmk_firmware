@@ -2,7 +2,6 @@
 
 #define TG_NKRO MAGIC_TOGGLE_NKRO
 
-<<<<<<< HEAD
 const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
     UCIS_SYM("eye", 0x1F441),     // 👁
     UCIS_SYM("lips", 0x1F444),    // 👄
@@ -10,8 +9,6 @@ const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
 
 );
 
-=======
->>>>>>> 206061e0a... Added custom keymap
 enum layer_names {
   _BASE,
   _FN,
@@ -19,12 +16,13 @@ enum layer_names {
 };
 
 enum custom_keycodes {
-<<<<<<< HEAD
-  UCIS_S = SAFE_RANGE
-=======
-  AUTO_SPRT,
-  SOMETHING
->>>>>>> 206061e0a... Added custom keymap
+  UCIS_S = SAFE_RANGE,
+  UC_FLIP,
+  UC_TABL,
+  UC_SHRG,
+  UC_DISA,
+  UC_LENN,
+  UC_FACE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -39,22 +37,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* SHIFT      Z       X       C       V       B       N       M       ,                          .       /       Shift            FN
     */KC_LSFT,  KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,  KC_COMM,                   KC_DOT,KC_SLSH,   KC_RSFT,       MO(_FN), \
     /* CTRL     GUI       ALT                    Space
-<<<<<<< HEAD
     */KC_LCTL,  KC_LGUI,  KC_LALT,               KC_SPC,                                       KC_RALT,      KC_NO,     KC_RCTL,   MO(_MACRO)),
-=======
-    */KC_LCTL,  KC_LGUI,  KC_LALT,               KC_SPC,                                       KC_NO,      KC_NO,     KC_RCTL,   MO(_MACRO)),
->>>>>>> 206061e0a... Added custom keymap
 
     [_FN]   = LAYOUT_60_ansi_split_bs_rshift(
     // Layer 1: General second layer with common functions
     /*DELETE      F1      F2      F3      F4      F5      F6     F7      F8      F9      F10      F11        F12          VOL-       VOL+
     */KC_DEL,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6, KC_F7,  KC_F8,  KC_F9,  KC_F10,  KC_F11,    KC_F12,      KC_VOLD,   KC_VOLU, \
     /*  CAPS      F11     UP                                                    MUTE    PL/PS  PREV_TRACK NEXT_TRACK              DELETE
-<<<<<<< HEAD
     */KC_CAPS,  KC_F11, KC_UP,_______,_______,_______,_______, UCIS_S, _______, KC_MUTE,KC_MPLY, KC_MPRV,   KC_MNXT,               KC_DEL,  \
-=======
-    */KC_CAPS,  KC_F11, KC_UP,_______,_______,_______,_______,_______,_______, KC_MUTE,KC_MPLY, KC_MPRV,   KC_MNXT,               KC_DEL,   \
->>>>>>> 206061e0a... Added custom keymap
     /*           LEFT     DOWN    RIGHT                                                                      HOME    END
     */_______,  KC_LEFT,KC_DOWN,KC_RIGHT,_______,_______,_______,_______,_______,_______,                  KC_HOME, KC_END,       _______,  \
     /*                                                                                           PAGE UP  PAGE DOWN
@@ -66,14 +56,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Layer 2: Specialized layer with complicated shortcuts placed to better chord, and macros
     /*            P1      P2      P3      P4      P5      P6     P7      P8      P9      P0       P-         P=           P*          P+
     */TG_NKRO,  KC_P1,  KC_P2,  KC_P3,  KC_P4,  KC_P5,  KC_P6, KC_P7,  KC_P8,  KC_P9,  KC_P0,   KC_PMNS,   KC_PEQL,    KC_PAST,   KC_PPLS,  \
-    /*                   RESET
-    */_______,  _______, RESET,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,                  _______,   \
+    /*                   
+    */_______,  UC_FLIP,UC_TABL,UC_SHRG,UC_DISA,UC_LENN,_______,_______,_______,_______,_______,_______,_______,               _______,     \
     /*                                                                                                    PRT_SCR   LCTRL          Pent
-    */_______,  _______, _______,_______,_______,_______,_______,_______,_______,_______,                 KC_PSCR, KC_LCTL,       KC_PENT,  \
+    */_______,  UC_FACE, _______,_______,_______,_______,_______,_______,_______,_______,                 KC_PSCR, KC_LCTL,       KC_PENT,  \
     /*                                                                                             P.       p/
-    */_______,  _______, _______,_______,_______,_______,_______,_______,_______,                KC_PDOT, KC_PSLS,   _______,      _______, \
+    */_______,  _______, _______,_______,_______,_______,_______,_______,_______,                KC_PDOT, KC_PSLS,   _______,     _______,  \
     /*
-    */_______,  _______, _______,                   _______,                                    _______,    _______,   _______,     _______)
+    */_______,  _______, _______,                   RESET,                                    _______,    _______,   _______,     _______)
 };
 
 void keyboard_post_init_user(void) {
@@ -87,9 +77,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         qk_ucis_start();
       }
-      return false;
       break;
+
+    case UC_FLIP:  // (ノಠ痊ಠ)ノ彡┻━┻
+        if (record->event.pressed) {
+          send_unicode_string("(ノಠ痊ಠ)ノ彡┻━┻");
+        }
+        break;
+
+    case UC_TABL:  // ┬─┬ノ( º _ ºノ)
+        if (record->event.pressed) {
+          send_unicode_string("┬─┬ノ( º _ ºノ)");
+        }
+        break;
+
+    case UC_SHRG:  // ¯\_(ツ)_/¯
+        if (record->event.pressed) {
+          send_unicode_string("¯\\_(ツ)_/¯");
+        }
+        break;
+
+    case UC_DISA:  // ಠ_ಠ
+        if (record->event.pressed) {
+          send_unicode_string("ಠ_ಠ");
+        }
+        break;
+
+    case UC_LENN: // ( ͡° ͜ʖ ͡°)
+        if (record->event.pressed) {
+          send_unicode_string("( ͡° ͜ʖ ͡°)");
+        }
+        break;
+
+    case UC_FACE: // 
+        if (record->event.pressed) {
+          send_unicode_string("👁👄👁");
+        }
+        break;
     default:
       return true;
   }
+  return false;
 }
+
+
+      
+    
