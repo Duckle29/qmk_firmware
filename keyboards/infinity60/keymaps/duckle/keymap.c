@@ -79,9 +79,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    case UC_FLIP:  // (ノಠ痊ಠ)ノ彡┻━┻
+    case UC_FLIP:  // (╯°□°）╯︵┻━┻)
         if (record->event.pressed) {
-          send_unicode_string("(ノಠ痊ಠ)ノ彡┻━┻");
+          send_unicode_string("(╯°□°）╯︵┻━┻");
         }
         break;
 
@@ -109,7 +109,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
 
-    case UC_FACE: // 
+    case UC_FACE: // 👁👄👁
         if (record->event.pressed) {
           send_unicode_string("👁👄👁");
         }
@@ -119,7 +119,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return false;
 }
-
 
       
     
