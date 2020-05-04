@@ -113,7 +113,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
           send_unicode_string("👁👄👁");
         }
-        break;
+        break;        
     default:
       return true;
   }
