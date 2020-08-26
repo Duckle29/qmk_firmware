@@ -50,6 +50,7 @@
       * [Fixing Your Branch](newbs_git_resynchronize_a_branch.md)
     * Keyboard Building
       * [Hand Wiring Guide](hand_wire.md)
+      * [Adding a new keyboard](adding_new_keyboard.md)
       * [ISP Flashing Guide](isp_flashing_guide.md)
 
   * Simple Keycodes
