@@ -3,9 +3,12 @@
 #define TG_NKRO MAGIC_TOGGLE_NKRO
 
 const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
-    UCIS_SYM("eye", 0x1F441),     // 👁
-    UCIS_SYM("lips", 0x1F444),    // 👄
-    UCIS_SYM("nose", 0x1F443)     // 👃
+    UCIS_SYM("tm", 0x2122),   // ™
+    UCIS_SYM("r", 0x00AE),    // ®
+    UCIS_SYM("c", 0x00A9),    // ©
+    UCIS_SYM("deg", 0x00B0),  // °
+    UCIS_SYM("ohm", 0x2126),  // Ω
+    UCIS_SYM("mu", 0x03BC)    // μ
 
 );
 
@@ -47,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*  CAPS      F11     UP                                                    MUTE    PL/PS  PREV_TRACK NEXT_TRACK              DELETE
     */KC_CAPS,  KC_F11, KC_UP,_______,_______,_______,_______, UCIS_S, _______, KC_MUTE,KC_MPLY, KC_MPRV,   KC_MNXT,               KC_DEL,  \
     /*           LEFT     DOWN    RIGHT                                                                      HOME    END
-    */_______,  KC_LEFT,KC_DOWN,KC_RIGHT,_______,_______,_______,_______,_______,_______,                  KC_HOME, KC_END,       _______,  \
+    */_______,  KC_LEFT,KC_DOWN,KC_RIGHT,_______,_______,_______,_______,_______,_______,                  KC_HOME, KC_END,       UCIS_S,  \
     /*                                                                                           PAGE UP  PAGE DOWN
     */_______,_______,_______,_______,_______,_______,_______,_______,_______,                   KC_PGDN, KC_PGUP,   _______,      _______, \
     /*
