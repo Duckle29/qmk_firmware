@@ -15,3 +15,5 @@ Flashing example for this keyboard:
     make infinity60:default:flash
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+
+![ic60](https://user-images.githubusercontent.com/2756925/114423127-2a8aec00-9bb7-11eb-8dfc-0e88048385fa.png)
