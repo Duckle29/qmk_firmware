@@ -16,8 +16,10 @@
 
 #pragma once
 
+#ifdef MIDI_ENABLE
 #define MIDI_BASIC
 #define MIDI_ADVANCED
+#endif
 
 #undef ENCODER_RESOLUTION
 #define ENCODER_RESOLUTION 4
@@ -25,3 +27,23 @@
 #undef RGBLIGHT_EFFECT_RAINBOW_SWIRL
 #undef RGBLIGHT_EFFECT_RAINBOW_MOOD
 #undef RGBLIGHT_EFFECT_TWINKLE
+
+// I'm using an old prototype board, so it's wired differently
+
+#undef DIRECT_PINS
+#define MATRIX_ROW_PINS { B7, F7, B5, B4 }
+#define MATRIX_COL_PINS { C6, C7, D2 }
+#define DIODE_DIRECTION COL2ROW
+
+#undef ENCODERS_PAD_A
+#undef ENCODERS_PAD_B
+#define ENCODERS_PAD_A { F1 }
+#define ENCODERS_PAD_B { F0 }
+
+#undef RGB_DI_PIN
+#define RGB_DI_PIN F6
+
+#undef RGBLED_NUM
+#define RGBLED_NUM 4
+
+#undef AUDIO_CLICKY

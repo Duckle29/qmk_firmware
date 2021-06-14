@@ -18,7 +18,9 @@
 enum zima_layers {
   _BASE,
   _FN,
+  #ifdef MIDI_ENABLE
   _MIDI1,
+  #endif
   _CVAT,
   _TOP_LAYER
 };
@@ -47,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_P7,      KC_P8,      KC_P9,  \
         KC_P4,      KC_P5,      KC_P6,  \
         KC_P1,      KC_P2,      KC_P3,  \
-        KC_P0,      KC_PDOT,    KC_PENT \
+        KC_P0,      RESET,    KC_PENT \
     ),
     [_FN] = LAYOUT_ortho_4x3(
         KC_F13,     KC_F14,     KC_F15, \
@@ -55,12 +57,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F19,     KC_F20,     KC_F21, \
         KC_F22,     KC_F23,     KC_F24  \
     ),
+    #ifdef MIDI_ENABLE
     [_MIDI1] = LAYOUT_ortho_4x3(
         NOTE0,      NOTE1,      NOTE2,  \
         NOTE3,      NOTE4,      NOTE5,  \
         NOTE6,      NOTE7,      NOTE8,  \
         NOTE9,      NOTE10,     NOTE11  \
     ),
+    #endif
     [_CVAT] = LAYOUT_ortho_4x3(
         KC_NO,      KC_NO,      KC_NO,  \
         KC_NO,      KC_NO,      KC_NO,  \
@@ -68,6 +72,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_D,       KC_N,       KC_F    \
     )
 };
+
+void shutdown_user()
+{
+    rgblight_setrgb(255, 0, 0);
+}
 
 bool tg_sprint_state = false;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -116,9 +125,11 @@ void oled_task_user(void) {
         case _FN:
             oled_write_ln_P(PSTR("Functions"), false);
             break;
+        #ifdef MIDI_ENABLE
         case _MIDI1:
             oled_write_ln_P(PSTR("MIDI1"), false);
             break;
+        #endif
         case _CVAT:
             oled_write_ln_P(PSTR("CVAT"), false);
             break;
@@ -127,6 +138,9 @@ void oled_task_user(void) {
 #endif
 
 void keyboard_post_init_user() {
+    #ifdef RGBLIGHT_ENABLE
+        rgblight_setrgb(100, 100, 100);
+    #endif
     #ifdef OLED_DRIVER_ENABLE
         wait_ms(2000);
         oled_init(OLED_ROTATION_180);
